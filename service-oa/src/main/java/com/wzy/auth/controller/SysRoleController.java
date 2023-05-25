@@ -1,4 +1,4 @@
-package com.wzy.auth.controler;
+package com.wzy.auth.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -86,7 +86,7 @@ public class SysRoleController {
 
     //修改角色-最终修改
     @ApiOperation(value = "修改角色")
-    @PostMapping("update")
+    @PutMapping ("update")
     public Result update(@RequestBody SysRole role){
         //调用service的方法实现
         boolean is_success = sysRoleService.updateById(role);

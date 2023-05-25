@@ -76,7 +76,7 @@ public class TestMpDemo1 {
         //ge、gt、le、lt、isNull、isNotNull
         //查询age>=30记录
         //第一个参数字段名称，第二个参数设置值
-        wrapper.eq("role_name","总经理");
+        wrapper.like("role_name","经理");
         List<SysRole> sysRoles = sysRoleMapper.selectList(wrapper);
         sysRoles.forEach(System.out::println);
     }
