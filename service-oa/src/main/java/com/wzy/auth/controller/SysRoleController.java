@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wzy.auth.service.SysRoleService;
 import com.wzy.common.result.Result;
 import com.wzy.model.system.SysRole;
+import com.wzy.vo.system.AssginRoleVo;
 import com.wzy.vo.system.SysRoleQueryVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Api(value="角色管理",tags={"角色管理接口"})
 @RestController
@@ -25,6 +28,23 @@ public class SysRoleController {
     //注入service
     @Autowired
     private SysRoleService  sysRoleService;
+
+    // 1、查询所有角色 和 当前用户所属角色
+    @ApiOperation("根据用户获取角色数据")
+    @GetMapping("/toAssign/{userId}")
+    public Result toAssign(@PathVariable Long userId) {
+        Map<String, Object> map = sysRoleService.findRoleDataByUserId(userId);
+        return Result.ok(map);
+    }
+
+    // 2、为用户分配角色
+    @ApiOperation("为用户分配角色")
+    @PostMapping("/doAssign")
+    public Result doAssign(@RequestBody AssginRoleVo assginRoleVo) {
+        sysRoleService.doAssign(assginRoleVo);
+        return Result.ok();
+    }
+
 
     //统一返回结果集
     @ApiOperation(value = "查询所有角色")

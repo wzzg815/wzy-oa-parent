@@ -23,15 +23,24 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "用户管理接口")
 @RestController
-@RequestMapping("/admin/system/sys-user")
+@RequestMapping("/admin/system/sysUser")
 public class SysUserController {
 
     @Autowired
     private SysUserService service;
 
+
+    @ApiOperation(value="更新状态")
+    @GetMapping("updateStatus/{id}/{status}")
+    public Result updateStatus(@PathVariable Long id,
+                               @PathVariable Integer status){
+        service.updateStatus(id,status);
+        return Result.ok();
+    }
+
     //用户条件分页查询
     @ApiOperation(value = "用户条件分页查询")
-    @GetMapping("{page}/{limit}")
+    @GetMapping("/{page}/{limit}")
     public Result index(@PathVariable Long page,
                         @PathVariable Long limit,
                         SysUserQueryVo sysUserQueryVo) {
@@ -42,14 +51,14 @@ public class SysUserController {
      //封装条件，判断条件值不为空
         LambdaQueryWrapper<SysUser> queryWrapper = new LambdaQueryWrapper<>();
         //获取条件值
-        String username = sysUserQueryVo.getKeyword();
+        String userName = sysUserQueryVo.getKeyword();
         String createTimeBegin = sysUserQueryVo.getCreateTimeBegin();
         String createTimeEnd = sysUserQueryVo.getCreateTimeEnd();
 
         //判断条件值不为空
         //like 模糊查询
-        if(!StringUtils.isEmpty(username)) {
-            queryWrapper.like(SysUser::getUsername, username);
+        if(!StringUtils.isEmpty(userName)) {
+            queryWrapper.like(SysUser::getUsername,userName);
         }
         //ge 大于等于
         if(!StringUtils.isEmpty(createTimeBegin)) {
